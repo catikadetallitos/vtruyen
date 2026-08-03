@@ -1,0 +1,15 @@
+services:
+  web:
+    image: ghcr.io/macosupdate/vivutruyen:tiny
+    environment:
+      PHP_POST_MAX_SIZE: "100M"
+      PHP_UPLOAD_MAX_FILESIZE: "100M"
+      PHP_SESSION_COOKIE_HTTPONLY: "1"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    depends_on:
+      - web
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
