@@ -1,15 +1,68 @@
+version: '3.8'
+
 services:
   web:
+    image: qmcgaw/gluetun
+    container_name: web
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    restart: always
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+      - WIREGUARD_ENDPOINT_IP=162.159.192.1
+      - WIREGUARD_ENDPOINT_PORT=2408
+      - WIREGUARD_PUBLIC_KEY=bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=172.16.0.2/32
+    networks:
+      - tunnel_net
+
+
+  app:
     image: ghcr.io/macosupdate/vivutruyen:tiny
+    deploy:
+      replicas: 3
     environment:
       PHP_POST_MAX_SIZE: "100M"
       PHP_UPLOAD_MAX_FILESIZE: "100M"
       PHP_SESSION_COOKIE_HTTPONLY: "1"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/localhealth", "http://127.0.0.1:80/health", "-I"]
+      retries: 10
+      start_period: 20s
+    labels:
+      autoheal-app: "true"
+    restart: always
+    network_mode: "container:web"
+    depends_on:
+      - web
 
   cloudflared:
     image: cloudflare/cloudflared:latest
+    container_name: cloudflare_tunnel
     depends_on:
       - web
     command: tunnel --no-autoupdate run
+    restart: always
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - tunnel_net
+
+  autoheal:
+    image: willfarrell/autoheal:latest
+    container_name: autoheal
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal-app
+    network_mode: none
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  tunnel_net:
+    driver: bridge
