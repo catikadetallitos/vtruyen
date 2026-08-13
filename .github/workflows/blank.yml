@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
+      WIREGUARD_PRIVATE_KEY: ${{ secrets.WIREGUARD_PRIVATE_KEY }}
 
     steps:
       - name: Checkout repo
