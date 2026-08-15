@@ -29,6 +29,8 @@ services:
       PHP_POST_MAX_SIZE: "100M"
       PHP_UPLOAD_MAX_FILESIZE: "100M"
       PHP_SESSION_COOKIE_HTTPONLY: "1"
+    volumes:
+      - /home/runner/nginx:/app/cache
     healthcheck:
       test: ["CMD", "/usr/local/bin/localhealth", "http://127.0.0.1:80/health", "-I"]
       retries: 10
