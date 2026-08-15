@@ -61,7 +61,7 @@ jobs:
         uses: yanovian/prune-old-actions@v1.0.12
         with:
           token: ${{ secrets.GH_TOKEN }}
-          days-ago: 1
+          days-ago: 30
           keep-latest: 5
 
       - name: Do your work
