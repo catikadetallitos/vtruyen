@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         
           
       - name: Log in to GHCR
@@ -61,7 +61,7 @@ jobs:
         uses: yanovian/prune-old-actions@v1.0.12
         with:
           token: ${{ secrets.GH_TOKEN }}
-          days-ago: 30
+          days-ago: 1
           keep-latest: 5
 
       - name: Do your work
