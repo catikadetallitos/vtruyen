@@ -60,7 +60,7 @@ jobs:
       - name: Delete old workflow runss
         uses: yanovian/prune-old-actions@v1.0.12
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.GH_TOKEN }}
           days-ago: 1
           keep-latest: 5
 
