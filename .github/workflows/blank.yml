@@ -8,6 +8,9 @@ on:
   repository_dispatch:
     types: [deploy-vivu]
 
+permissions:
+  actions: write
+  
 # concurrency:
 #   group: n8n
 #   cancel-in-progress: false
