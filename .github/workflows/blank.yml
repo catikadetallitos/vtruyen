@@ -55,12 +55,12 @@ jobs:
         with:
           all_but_latest: true
           workflow_id: ${{ github.event.workflow.id }}
-          access_token: ${{ secrets.GH_TOKEN }}
+          access_token: ${{ github.token }}
 
       - name: Delete old workflow runss
         uses: yanovian/prune-old-actions@v1.0.12
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ github.token }}
           days-ago: 1
           keep-latest: 5
 
