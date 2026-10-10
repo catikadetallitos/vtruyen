@@ -45,7 +45,7 @@ services:
 
   cloudflared:
     #image: cloudflare/cloudflared:latest
-    image: ghcr.io/cbc02009/cloudflared:latest
+    image: ghcr.io/cbc02009/cloudflared:2026.10.0
     container_name: cloudflare_tunnel
     depends_on:
       - web
