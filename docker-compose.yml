@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   web:
-    image: qmcgaw/gluetun
+    #image: qmcgaw/gluetun
+    image: ghcr.io/qdm12/gluetun
     container_name: web
     cap_add:
       - NET_ADMIN
@@ -43,7 +44,8 @@ services:
       - web
 
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    #image: cloudflare/cloudflared:latest
+    image: ghcr.io/cbc02009/cloudflared:latest
     container_name: cloudflare_tunnel
     depends_on:
       - web
@@ -55,7 +57,8 @@ services:
       - tunnel_net
 
   autoheal:
-    image: willfarrell/autoheal:latest
+    #image: willfarrell/autoheal:latest
+    image: ghcr.io/liushnulaa4-lgtm/willfarrell/autoheal:latest
     container_name: autoheal
     environment:
       AUTOHEAL_CONTAINER_LABEL: autoheal-app
